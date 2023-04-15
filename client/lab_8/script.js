@@ -42,7 +42,7 @@ function cutRestaurantList(list) {
 
 async function mainEvent() { // the async keyword means we can make API requests
   const mainForm = document.querySelector('.main_form'); // This class name needs to be set on your form before you can listen for an event on it
-  const filterButton = document.querySelector('#filter');
+  //const filterButton = document.querySelector('#filter');
   const loadDataButton = document.querySelector('#data_load');
   const generateListButton = document.querySelector('#generate');
   const textfield = document.querySelector('#resto')
@@ -50,8 +50,12 @@ async function mainEvent() { // the async keyword means we can make API requests
   const loadAnimation = document.querySelector('#data_load_animation')
   loadAnimation.style.display = "none";
   generateListButton.classList.add("hidden");
- 
-  let storedlist = [];
+  
+  const storedData = localStorage.getItem("storedData");
+  const parsedData = JSON.parse(storedData);
+  if (parsedData.length > 0) {
+    generateListButton.classList.remove("hidden");
+}
   let currentList = [];
 
   loadDataButton.addEventListener('click', async (submitEvent) => { // async has to be declared on every function that needs to "await" something
@@ -61,32 +65,21 @@ async function mainEvent() { // the async keyword means we can make API requests
    
       
     const results = await fetch('https://data.princegeorgescountymd.gov/resource/umjn-t2iz.json');
-    storedlist = await results.json();
-    if (storedlist.length > 0) {
-      generateListButton.classList.remove("hidden");
-  }
+    
+    const storedList = await results.json();
+    localStorage.setItem("storedData", JSON.stringify(storedList));
+    
     loadAnimation.style.display = "none";
-    console.table(storedlist); 
+    //console.table(storedList); 
   });
 
-  filterButton.addEventListener('click', (event) => {
-    console.log('clicked FilterButton');
-
-    const formData = new FormData(mainForm); 
-    const formProps = Object.fromEntries(formData);
-
-    console.log(formProps);
-    const newList = filterList(currentList, formProps.resto);
-    injectHTML(newList)
-    console.log(newList);
-  })
 
   generateListButton.addEventListener("click", (event) => {
-      console.log('generate new list');
-      currentList = cutRestaurantList(storedlist);
+      console.log("generate new list");
+      currentList = cutRestaurantList(parsedData);
       console.log(currentList);
       injectHTML(currentList);
-  })
+  });
 
   textfield.addEventListener('input', (event) => {
       console.log('input', event.target.value);

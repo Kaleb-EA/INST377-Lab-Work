@@ -4,8 +4,15 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Kaleb Afework's Lab for INST377</title>
-    <link rel="stylesheet" href="style.css" />
-  </head>
+    
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
+  integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI="
+  crossorigin=""/>
+    
+  <link rel="stylesheet" href="style.css" />
+  <!-- Make sure you put this after Leaflet's css-->
+  <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js" integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM=" crossorigin=""></script>
+</head>
 </html>
 <div class="wrapper">
   <header class="header">
@@ -16,6 +23,7 @@
         <div>Form Inputs</div>
         <form action='https://data.princegeorgescountymd.gov/resource/umjn-t2iz.json' class="main_form box">
             <button type="button" id="data_load">Load County Data</button>
+            <button type="button" id="data_clear">Clear County Data</button>
         <div>
             <label for="resto">Filter By Restaurant Name</label>
             <input type="text" name="resto" id="resto">
@@ -27,6 +35,7 @@
         </div>
     <div class="right_section box">
       <h3>Local Restaurant List</h3>
+      <div id="map" class="box"></div>
       <ol class="box" id="restaurant_list">
         A List of Local Restaurants
       </ol>
